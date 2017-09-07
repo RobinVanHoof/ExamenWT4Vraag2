@@ -1,0 +1,9 @@
+<h1>Voeg recept toe</h1>
+<form action="{% url 'ask' %}" method='post'>
+    {% csrf_token %}
+    Naam: <input type="text" name="naam">
+    Calorieën: <input type="text" name="cal">
+    Ingrediënten: <input type="text" name="ingr">
+    Benodigde tijd: <input type="text" name="tijd">
+    <input type="submit" value="ASK" >
+</form>
