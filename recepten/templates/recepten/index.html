@@ -1,9 +1,25 @@
+<h1> Alle recepten </h1>
+<a href="{% url 'sortbycalorie'%}">Sorteer volgens calorieën</a></br>
+<a href="{% url 'sortbynaam'%}">Sorteer volgens naam</a></br>
+
+
+{% for recept in alle_recepten %}
+  <h2>{{recept.naam}}<h2>
+  <ul>
+    <li>Calorieën: {{recept.cal}}</li>
+    <li>Ingrediënten: {{recept.ingred}}</li>
+    <li>Benodigde tijd: {{recept.tijd}}</li>
+</ul>
+{% endfor %}
+
+
+
 <h1>Voeg recept toe</h1>
-<form action="{% url 'ask' %}" method='post'>
+<form action="" method='post'>
     {% csrf_token %}
-    Naam: <input type="text" name="naam">
-    Calorieën: <input type="text" name="cal">
-    Ingrediënten: <input type="text" name="ingr">
-    Benodigde tijd: <input type="text" name="tijd">
-    <input type="submit" value="ASK" >
+    Naam: <input type="text" name="naam"></br>
+    Calorieën: <input type="text" name="cal"></br>
+    Ingrediënten: <input type="text" name="ingr"></br>
+    Benodigde tijd: <input type="text" name="tijd"></br>
+    <input type="submit" value="Voeg toe" >
 </form>

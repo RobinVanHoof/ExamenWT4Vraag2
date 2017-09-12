@@ -1,27 +1,44 @@
 from django.shortcuts import render
-import django
+import pymongo
+from pymongo import MongoClient
 
 # Create your views here.
 
+client = MongoClient()
+
+db = client.receptDB
+recepten = db.recepten
 
 def voegToe(request):
+    alle_recepten = []
     if request.method == 'POST':
         naam = request.POST.get('naam')
         cal = request.POST.get('cal')
         ingr = request.POST.get('ingr')
-        tijd = request.POST.get('tijd)
-        if len(question) == 0:
-            return render(request, 'magiceightball/index.html', {'answer': 'You have to ask something'})
+        tijd = request.POST.get('tijd')
 
-        answer = r.get('question:' + question)
-        if answer == None:
+        if not recepten.find_one({"naam": naam}):
+            recept = {
+            "naam": naam,
+            "cal": int(cal),
+            "ingred": ingr,
+            "tijd": tijd
+            }
+            recepten.insert_one(recept)
+            alle_recepten = recepten.find()
+            return render(request, 'recepten/index.html', {'alle_recepten': alle_recepten} )
+        else:
+            return render(request, 'recepten/bestaatreeds.html', None)
+    else:
+        alle_recepten = recepten.find()
+        return render(request, 'recepten/index.html', {'alle_recepten': alle_recepten} )
 
-            answer = random.choice(possible_answers)
-            answerindex = possible_answers.index(answer)
-            while not cangiveanswer(answerindex):
-                answer = random.choice(possible_answers)
-                answerindex = possible_answers.index(answer)
+def sortbycalorie(request):
+    alle_recepten = []
+    alle_recepten =  recepten.find().sort("cal", 1)
+    return render(request, 'recepten/index.html', {'alle_recepten': alle_recepten})
 
-            r.incr('answer:' + str(answerindex))
-            r.set('question:' + question, answer)
-        return render(request, 'magiceightball/index.html', {'answer': answer} )
+def sortbynaam(request):
+    alle_recepten = []
+    alle_recepten = recepten.find().sort("naam", 1)
+    return render(request, 'recepten/index.html', {'alle_recepten': alle_recepten})
